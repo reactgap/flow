@@ -8,6 +8,7 @@ import {
   MdOutlineEdit,
   MdOutlineIndeterminateCheckBox,
   MdSearch,
+  MdImageSearch,
 } from 'react-icons/md'
 import { useSnapshot } from 'valtio'
 
@@ -27,6 +28,7 @@ import { copy, keys, last } from '../utils'
 import { Button, IconButton } from './Button'
 import { TextField } from './Form'
 import { layout, LayoutAnchorMode, LayoutAnchorPosition } from './base'
+import Modal from './modal'
 
 interface TextSelectionMenuProps {
   tab: BookTab
@@ -127,6 +129,7 @@ const TextSelectionMenuRenderer: React.FC<TextSelectionMenuRendererProps> = ({
   const cfi = tab.rangeToCfi(range)
   const annotation = tab.book.annotations.find((a) => a.cfi === cfi)
   const [annotate, setAnnotate] = useState(!!annotation)
+  const [popup, setPopup] = useState(false);
 
   const position = forward
     ? LayoutAnchorPosition.Before
@@ -142,12 +145,21 @@ const TextSelectionMenuRenderer: React.FC<TextSelectionMenuRendererProps> = ({
     ? anchorRect.height
     : _lineHeight * (zoom ?? 1)
 
+  const onCancelModal = () => {
+    setPopup(false);
+  };
+
   return (
     <FocusLock disabled={mobile}>
       <Overlay
         // cover `sash`
         className="!z-50 !bg-transparent"
         onMouseDown={hide}
+      />
+      <Modal
+        isOpen={popup}
+        setIsOpen={setPopup}
+        onCancel={onCancelModal}
       />
       <div
         ref={(el) => {
@@ -221,6 +233,14 @@ const TextSelectionMenuRenderer: React.FC<TextSelectionMenuRendererProps> = ({
               size={ICON_SIZE}
               onClick={() => {
                 setAnnotate(true)
+              }}
+            />
+            <IconButton
+              title={t('annotate')}
+              Icon={MdImageSearch}
+              size={ICON_SIZE}
+              onClick={() => {
+                setPopup(true)
               }}
             />
             {tab.isDefined(text) ? (
