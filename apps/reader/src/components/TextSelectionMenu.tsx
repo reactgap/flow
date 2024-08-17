@@ -23,7 +23,7 @@ import {
 } from '../hooks'
 import { BookTab } from '../models'
 import { isTouchScreen, scale } from '../platform'
-import { copy, keys, last } from '../utils'
+import { copy, getPromptFromCFI, keys, last, parseCFI } from '../utils'
 
 import { Button, IconButton } from './Button'
 import { TextField } from './Form'
@@ -135,6 +135,13 @@ const TextSelectionMenuRenderer: React.FC<TextSelectionMenuRendererProps> = ({
     ? LayoutAnchorPosition.Before
     : LayoutAnchorPosition.After
 
+    console.log('annotation', annotation);
+    console.log('cfi', cfi);
+    console.log('parseCFI', parseCFI(cfi));
+  const cfiSanitize = parseCFI(cfi) || {}
+  const prompt = getPromptFromCFI(cfiSanitize, tab.title);
+  console.log('prompt', prompt);
+
   const { zoom } = useTypography(tab)
   const endContainer = forward ? range.endContainer : range.startContainer
   const _lineHeight = parseFloat(
@@ -160,6 +167,7 @@ const TextSelectionMenuRenderer: React.FC<TextSelectionMenuRendererProps> = ({
         isOpen={popup}
         setIsOpen={setPopup}
         onCancel={onCancelModal}
+        prompt={prompt}
       />
       <div
         ref={(el) => {

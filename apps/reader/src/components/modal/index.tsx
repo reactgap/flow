@@ -8,14 +8,16 @@ interface Props {
   isOpen: boolean;
   setIsOpen: SetStateAction<any>;
   onCancel: () => void;
+  prompt?: string;
 }
 
-const Modal = ({ isOpen, setIsOpen, onCancel }: Props) => {
+const Modal = ({ isOpen, setIsOpen, onCancel, prompt }: Props) => {
+  console.log('prompt request', prompt);
   const [image, setImage] = useState(undefined);
   useEffect(() => {
     async function generateImageFromAI() {
       try {
-        const response = await generationsApi({});
+        const response = await generationsApi(prompt);
         console.log('response generateImageFromAI', response);
         const generationId = response.data.sdGenerationJob?.generationId;
         await getImageFromGenerationId(generationId);
