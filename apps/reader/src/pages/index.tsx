@@ -222,8 +222,19 @@ const Library: React.FC = () => {
                 disabled={!books}
                 onClick={() => {
                   fetchBook(
+                    'https://sach.app/samples/De-men-phieu-luu-ky.epub',
+                  );
+                  fetchBook(
+                    'https://sach.app/samples/Totto-Chan-ben-cua-so-Tetsuko-Kuroyanagi.epub',
+                  );
+                  fetchBook(
+                    'https://sach.app/samples/Truyen-co-Andersen.epub',
+                  );
+                  /*
+                  fetchBook(
                     'https://epubtest.org/books/Fundamental-Accessibility-Tests-Basic-Functionality-v1.0.0.epub',
-                  )
+                  );
+                  */
                 }}
               >
                 {t('download_sample_book')}
