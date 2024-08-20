@@ -69,7 +69,7 @@ const datastore: any = {
             ]
         }
     },
-    "Truyen_co_Andersen.epub": {
+    "Truyen-co-Andersen.epub": {
         "/6/10": {
             prompt: prompt201,
             paragraphs: [
